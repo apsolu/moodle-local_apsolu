@@ -209,7 +209,7 @@ class Payment {
      * @return int Statut de paiement défini au niveau de la classe Payment.
      */
     public static function get_user_card_status($card, $userid = null) {
-        global $DB, $USER;
+        global $CFG, $DB, $USER;
 
         if ($userid === null) {
             $userid = $USER->id;
@@ -235,14 +235,16 @@ class Payment {
         // Vérifie les séances d'essais.
         if ($card->trial > 0) {
             foreach ($enrols as $enrol) {
-                // TODO: mauvais component.
-                // TODO: n'utilise pas un champ indexé ! ÇA RAME !
-                $conditions = ['component' => 'local_apsolu_presence', 'courseid' => $enrol->courseid, 'relateduserid' => $userid];
-                if ($DB->count_records('logstore_standard_log', $conditions) >= $card->trial) {
-                    if (defined('BEHAT_SITE_RUNNING') === false) {
-                        debugging('Carte ' . $card->fullname . ' due (fin des séances d\'essais).', $level = DEBUG_DEVELOPER);
+                if (isset($CFG->is_siuaps_rennes) === true) {
+                    // TODO: mauvais component.
+                    // TODO: n'utilise pas un champ indexé ! ÇA RAME !
+                    $conditions = ['component' => 'local_apsolu_presence', 'courseid' => $enrol->courseid, 'relateduserid' => $userid];
+                    if ($DB->count_records('logstore_standard_log', $conditions) >= $card->trial) {
+                        if (defined('BEHAT_SITE_RUNNING') === false) {
+                            debugging('Carte ' . $card->fullname . ' due (fin des séances d\'essais).', $level = DEBUG_DEVELOPER);
+                        }
+                        return self::DUE;
                     }
-                    return self::DUE;
                 }
             }
 
