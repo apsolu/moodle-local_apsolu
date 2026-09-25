@@ -253,7 +253,11 @@ class Payment {
                 if (isset($CFG->is_siuaps_rennes) === true) {
                     // TODO: mauvais component.
                     // TODO: n'utilise pas un champ indexé ! ÇA RAME !
-                    $conditions = ['component' => 'local_apsolu_presence', 'courseid' => $enrol->courseid, 'relateduserid' => $userid];
+                    $conditions = [
+                        'component' => 'local_apsolu_presence',
+                        'courseid' => $enrol->courseid,
+                        'relateduserid' => $userid,
+                    ];
                     if ($DB->count_records('logstore_standard_log', $conditions) >= $card->trial) {
                         if (defined('BEHAT_SITE_RUNNING') === false) {
                             debugging('Carte ' . $card->fullname . ' due (fin des séances d\'essais).', $level = DEBUG_DEVELOPER);
