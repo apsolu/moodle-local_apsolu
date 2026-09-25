@@ -235,6 +235,21 @@ class Payment {
         // Vérifie les séances d'essais.
         if ($card->trial > 0) {
             foreach ($enrols as $enrol) {
+                $sql = "SELECT COUNT(aap.id)
+                          FROM {apsolu_attendance_presences} aap
+                          JOIN {apsolu_attendance_sessions} aas ON aas.id = aap.sessionid
+                          JOIN {apsolu_attendance_statuses} stat ON stat.id = aap.statusid
+                         WHERE stat.absence = 0
+                           AND aas.courseid = :courseid
+                           AND aap.studentid = :userid";
+                $conditions = ['courseid' => $enrol->courseid, 'userid' => $userid];
+                if ($DB->count_records_sql($sql, $conditions) >= $card->trial) {
+                    if (defined('BEHAT_SITE_RUNNING') === false) {
+                        debugging('Carte ' . $card->fullname . ' due (fin des séances d\'essais).', $level = DEBUG_DEVELOPER);
+                    }
+                    return self::DUE;
+                }
+
                 if (isset($CFG->is_siuaps_rennes) === true) {
                     // TODO: mauvais component.
                     // TODO: n'utilise pas un champ indexé ! ÇA RAME !
