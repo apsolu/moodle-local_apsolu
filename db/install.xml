@@ -143,34 +143,6 @@
         </INDEXES>
     </TABLE>
 
-    <!-- COURSES (SLOTS) -->
-    <TABLE NAME="apsolu_courses" COMMENT="Extend courses data">
-        <FIELDS>
-            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Utilise le champ 'id' de la table mdl_course.id" />
-            <FIELD NAME="event" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" />
-            <FIELD NAME="skillid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" />
-            <FIELD NAME="locationid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" />
-            <FIELD NAME="weekday" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" />
-            <FIELD NAME="numweekday" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" />
-            <FIELD NAME="starttime" TYPE="char" LENGTH="5" NOTNULL="true" SEQUENCE="false" />
-            <FIELD NAME="endtime" TYPE="char" LENGTH="5" NOTNULL="true" SEQUENCE="false" />
-            <FIELD NAME="license" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" />
-            <FIELD NAME="on_homepage" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" />
-            <FIELD NAME="showpolicy" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" />
-            <FIELD NAME="periodid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" />
-            <FIELD NAME="information" TYPE="text" NOTNULL="false" SEQUENCE="false" />
-            <FIELD NAME="informationformat" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" />
-        </FIELDS>
-        <KEYS>
-            <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for apsolu_courses" />
-        </KEYS>
-        <INDEXES>
-            <INDEX NAME="skillid" UNIQUE="false" FIELDS="skillid"/>
-            <INDEX NAME="locationid" UNIQUE="false" FIELDS="locationid"/>
-            <INDEX NAME="periodid" UNIQUE="false" FIELDS="periodid"/>
-        </INDEXES>
-    </TABLE>
-
     <!-- CATEGORIES (SPORTS) -->
     <TABLE NAME="apsolu_courses_categories" COMMENT="Extend courses data">
         <FIELDS>
@@ -515,18 +487,6 @@
         <INDEXES>
             <INDEX NAME="unique_name" UNIQUE="true" FIELDS="name" />
         </INDEXES>
-    </TABLE>
-
-    <!-- COMPLEMENTS -->
-    <TABLE NAME="apsolu_complements" COMMENT="Extend courses data">
-        <FIELDS>
-            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" />
-            <FIELD NAME="price" TYPE="float" LENGTH="10" DECIMALS="2" DEFAULT="0.00" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" />
-            <FIELD NAME="federation" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" />
-        </FIELDS>
-        <KEYS>
-            <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for apsolu_complements" />
-        </KEYS>
     </TABLE>
 
 	<!-- GRADE ITEMS -->

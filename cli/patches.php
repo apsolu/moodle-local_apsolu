@@ -31,6 +31,15 @@ require(__DIR__ . '/../../../config.php');
 try {
     $dbman = $DB->get_manager();
 
+    // Supprime les tables apsolu_courses et apsolu_complements.
+    $tables = ['apsolu_courses', 'apsolu_complements'];
+    foreach ($tables as $tablename) {
+        $table = new xmldb_table($tablename);
+        if ($dbman->table_exists($table) === true) {
+            $dbman->drop_table($table);
+        }
+    }
+
     mtrace(get_string('success'));
 } catch (Exception $exception) {
     mtrace(get_string('error'));
