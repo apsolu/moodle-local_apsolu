@@ -94,21 +94,32 @@ if ($formdata = $mform->get_data()) {
             }
         } else if (isset($formdata->importbutton) === true) {
             // Import.
-            $email = trim($line[$emailcolumnindex]);
-            if (isset($users[$email]) === false) {
-                // Utilisateur non trouvé.
-                $result[] = get_string('the_user_with_email_X_was_not_found', 'local_apsolu', $email);
-                continue;
-            }
-
-            $adhesion = $users[$email];
-            $profileurl = new moodle_url('/user/profile.php', ['id' => $adhesion->userid]);
-
             $licenseid = trim($line[$federationnumbercolumnindex]);
             if (empty($licenseid) === true) {
                 // Numéro de license vide.
                 continue;
             }
+
+            $email = trim($line[$emailcolumnindex]);
+            if (isset($users[$email]) === false) {
+                // Recherche par numéro de licence (valable pour les licenciés de l'année précédente qui peuvent avoir dans leur
+                // profil MySportU une adresse de courriel perso).
+                $sql = "SELECT u.email
+                          FROM {user} u
+                          JOIN {apsolu_federation_adhesions} adh ON u.id = adh.userid
+                         WHERE adh.federationnumber = :federationnumber";
+                $record = $DB->get_record_sql($sql, ['federationnumber' => $licenseid]);
+                if ($record === false) {
+                    // Utilisateur non trouvé.
+                    $result[] = get_string('the_user_with_email_X_was_not_found', 'local_apsolu', $email);
+                    continue;
+                }
+
+                $email = $record->email;
+            }
+
+            $adhesion = $users[$email];
+            $profileurl = new moodle_url('/user/profile.php', ['id' => $adhesion->userid]);
 
             if (ctype_alnum($licenseid) === false) {
                 // Numéro de licence invalide.
