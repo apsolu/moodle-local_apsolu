@@ -96,21 +96,9 @@ if ($formdata = $mform->get_data()) {
             // Import.
             $email = trim($line[$emailcolumnindex]);
             if (isset($users[$email]) === false) {
-                // TODO: à supprimer prochainement...
-                // Ajoute un test spécifique pour les étudiants de Rennes 1.
-                $altemail = $email;
-                if (str_ends_with('univ-rennes.fr', $email) === true) {
-                    $altemail = str_replace('univ-rennes.fr', 'univ-rennes1.fr', $email);
-                } else if (str_ends_with('univ-rennes1.fr', $email) === true) {
-                    $altemail = str_replace('univ-rennes1.fr', 'univ-rennes.fr', $email);
-                }
-                // Fin du test spécifique pour les étudiants de Rennes 1.
-
-                if (isset($users[$altemail]) === false) {
-                    // Utilisateur non trouvé.
-                    $result[] = get_string('the_user_with_email_X_was_not_found', 'local_apsolu', $email);
-                    continue;
-                }
+                // Utilisateur non trouvé.
+                $result[] = get_string('the_user_with_email_X_was_not_found', 'local_apsolu', $email);
+                continue;
             }
 
             $adhesion = $users[$email];
