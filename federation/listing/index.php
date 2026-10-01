@@ -81,7 +81,7 @@ foreach ($recordset as $record) {
         $institutions[$institution] = $institution;
     }
 
-    $ufr = trim($record->ufr);
+    $ufr = trim($record->ufr ?? '');
     if (empty($ufr) === false) {
         $ufrs[$ufr] = $ufr;
     }
