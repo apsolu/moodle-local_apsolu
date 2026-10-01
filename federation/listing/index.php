@@ -111,7 +111,7 @@ if ($data = $mform->get_data()) {
          LEFT JOIN {user_info_data} uid1 ON u.id = uid1.userid AND uid1.fieldid = :fieldid1
          LEFT JOIN {user_info_data} uid2 ON u.id = uid2.userid AND uid2.fieldid = :fieldid2
              WHERE u.deleted = 0
-               AND afa.federationnumber IS NOT NULL";
+               AND afa.timelicensed > 0";
     $params = [];
     $params['fieldid1'] = $customfields['apsoluufr']->id;
     $params['fieldid2'] = $customfields['apsolucycle']->id;
