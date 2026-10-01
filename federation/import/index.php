@@ -131,7 +131,8 @@ if ($formdata = $mform->get_data()) {
                 continue;
             }
 
-            if ($adhesion->federationnumber === $licenseid) {
+            if ($adhesion->federationnumber === $licenseid && $adhesion->timelicensed > 0) {
+                // Cette licence a déjà été importée.
                 continue;
             }
 
@@ -149,7 +150,7 @@ if ($formdata = $mform->get_data()) {
             $params->licenseid = $licenseid;
             $params->profile = html_writer::link($profileurl, $adhesion->firstname . ' ' . $adhesion->lastname);
 
-            if (empty($oldlicenseid) === true) {
+            if (empty($oldlicenseid) === true || empty($adhesion->timelicensed) === true) {
                 // Création d'un numéro AS.
                 $result[] = get_string('federation_insert_license', 'local_apsolu', $params);
 
