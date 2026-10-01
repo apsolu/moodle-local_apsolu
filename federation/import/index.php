@@ -82,6 +82,7 @@ if ($formdata = $mform->get_data()) {
     $columns = $cir->get_columns();
 
     $i = 0;
+    $data = [];
     while ($line = $cir->next()) {
         if (isset($formdata->previewbutton) === true) {
             // Prévisualisation.
