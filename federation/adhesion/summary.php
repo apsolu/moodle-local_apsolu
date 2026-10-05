@@ -61,7 +61,7 @@ $data->fields[] = ['label' => get_string('birthday', 'local_apsolu'),
 $data->fields[] = ['label' => get_string('nationality', 'local_apsolu'), 'value' => $adhesion->data->nationality];
 $data->fields[] = ['label' => get_string('mail', 'local_apsolu'), 'value' => $USER->email];
 $data->fields[] = ['label' => get_string('phone2', 'local_apsolu'), 'value' => $adhesion->data->phone2];
-$data->fields[] = ['label' => get_string('discipline', 'local_apsolu'), 'value' => implode(', ', $adhesion->data->activity)];
+$data->fields[] = ['label' => get_string('discipline', 'local_apsolu'), 'value' => implode(', ', $adhesion->data->activities)];
 
 // On récupère le champ autre fédération.
 if (empty($getconfig->otherfederation) === false) {
