@@ -23,7 +23,7 @@ Feature: Teste la présentation réalisée lors de démonstration de l'applicati
   Scenario: Inscrit l'utilisateur "letudiant" au créneau.
     Given I am on the "Homepage" page logged in as "letudiant"
     When I follow "S’inscrire à une activité"
-    And I click on "Déplier/replier toutes les activités" "button"
+    And I click on "Tout déplier" "button"
     And I click on "Basket-ball" "Thursday" "14h30" course
     And I wait until "#apsolu-enrol-form" "css_element" exists
     And I should see "Évalué (option)" in the "Type d’inscription" "select"
@@ -32,7 +32,8 @@ Feature: Teste la présentation réalisée lors de démonstration de l'applicati
     And I set the following fields to these values:
       | Type d’inscription | Non évalué |
     And I press "S’inscrire"
-    Then I should see "Votre vœu a été enregistré. Vous êtes sur la liste principale."
+    Then I should see "Votre vœu a été enregistré"
+    And I should see "Vous êtes sur la liste principale."
 
   @javascript
   Scenario: Valide le processus de paiement.
