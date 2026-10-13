@@ -601,6 +601,8 @@ select.tablesorter-filter {
 }
 
 /* Solution temporaire en attendant la résolution du bug MDL-85523. */
+#page-admin-local-apsolu-federation-index table tbody th,
+#page-admin-local-apsolu-federation-index table tbody td,
 #page-local-apsolu-attendance-index table tbody th,
 #page-local-apsolu-attendance-index table tbody td {
     background-color: var(--bs-table-bg) !important; /* stylelint-disable-line declaration-no-important */
