@@ -116,7 +116,7 @@ if (($data = $mform->get_data()) || isset($idnumber) === true) {
 
         // Liste les activités de l'adhérant.
         $activities = [];
-        foreach ($adhesion->data->activity as $activity) {
+        foreach ($adhesion->data->activities as $activity) {
             if (isset($federationactivities[$activity]) === false) {
                 continue;
             }
