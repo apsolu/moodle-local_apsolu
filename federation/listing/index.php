@@ -128,7 +128,7 @@ if ($data = $mform->get_data()) {
     if (isset($data->ufrs[0]) === true) {
         [$sqlin, $sqlparams] = $DB->get_in_or_equal($data->ufrs, SQL_PARAMS_NAMED, 'ufr_');
 
-        $sql .= sprintf(' AND uid.data %s', $sqlin);
+        $sql .= sprintf(' AND uid1.data %s', $sqlin);
         $params = array_merge($params, $sqlparams);
     }
 
