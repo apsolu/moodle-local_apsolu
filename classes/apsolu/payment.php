@@ -306,7 +306,7 @@ class Payment {
             if ($enrolcalendars[$calendar->calendartypeid] > $calendar->value) {
                 if (defined('BEHAT_SITE_RUNNING') === false) {
                     debugging(
-                        'Carte ' . $card->fullname . ' due (nombre d\'inscriptions offertes dépasées).',
+                        'Carte ' . $card->fullname . ' due (nombre d\'inscriptions offertes dépassées).',
                         $level = DEBUG_DEVELOPER
                     );
                 }
