@@ -282,7 +282,25 @@ class adhesion extends record {
      *
      * @return action_menu|null Retourne null si aucune action n'est disponible pour l'utilisateur donné.
      */
+    #[\core\attribute\deprecated(
+        replacement: 'get_medical_certificate_action_menu',
+    )]
     public function get_action_menu(int|string $userid, int|string $contextid): ?action_menu {
+        \core\deprecation::emit_deprecation([$this, __FUNCTION__]);
+
+        return $this->get_medical_certificate_action_menu($userid, $contextid);
+    }
+
+    /**
+     * Retourne le menu d'actions permettant aux gestionnaires de valider ou refuser une adhésion sur la page de validation des
+     * certificats.
+     *
+     * @param int|string $userid Identifiant de l'utilisateur ayant réalisé une demande.
+     * @param int|string $contextid Identifiant du contexte du cours FFSU.
+     *
+     * @return action_menu|null Retourne null si aucune action n'est disponible pour l'utilisateur donné.
+     */
+    public function get_medical_certificate_action_menu(int|string $userid, int|string $contextid): ?action_menu {
         if (empty($this->federationnumberrequestdate) === true) {
             // L'utilisateur n'a pas encore validé sa demande.
             return null;
