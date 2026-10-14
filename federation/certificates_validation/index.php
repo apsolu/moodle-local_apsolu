@@ -257,7 +257,7 @@ if (($data = $mform->get_data()) || isset($idnumber) === true) {
             }
         }
 
-        $actionmenu = $adhesion->get_action_menu($record->id, $context->id);
+        $actionmenu = $adhesion->get_medical_certificate_action_menu($record->id, $context->id);
         $row[] = $actionmenu ? $OUTPUT->render($actionmenu) : '';
 
         $rows[] = $row;
