@@ -365,13 +365,9 @@ class adhesion extends record {
         } else {
             $attributes['data-stringid'] = 'medical_certificate_refusal_message';
             $attributes['data-target-validation'] = self::MEDICAL_CERTIFICATE_STATUS_EXEMPTED;
-            if ($this->have_to_upload_parental_authorization() === true) {
-                $attributes['data-target-validation-color'] = 'table-default';
-                $attributes['data-target-validation-text'] = '';
-            } else {
-                $attributes['data-target-validation-color'] = 'table-info';
-                $attributes['data-target-validation-text'] = get_string('medical_certificate_not_required', 'local_apsolu');
-            }
+            $attributes['data-target-validation-color'] = 'table-info';
+            $attributes['data-target-validation-text'] = get_string('medical_certificate_not_required', 'local_apsolu');
+
             $menuoptions[] = [
                 'attributes' => $attributes,
                 'icon' => 'i/grade_incorrect',

@@ -139,10 +139,7 @@ if (($data = $mform->get_data()) || isset($idnumber) === true) {
         }
 
         // Affiche la colonne pour afficher les fichiers.
-        if (
-            $adhesion->medicalcertificatestatus === Adhesion::MEDICAL_CERTIFICATE_STATUS_EXEMPTED &&
-            $adhesion->have_to_upload_parental_authorization() === false
-        ) {
+        if ($adhesion->medicalcertificatestatus === Adhesion::MEDICAL_CERTIFICATE_STATUS_EXEMPTED) {
             // Cas où l'étudiant n'a pas de fichier à déposer.
             $row[] = ''; // Aucun fichier.
             $cell = new html_table_cell(get_string('medical_certificate_not_required', 'local_apsolu'));
@@ -151,19 +148,14 @@ if (($data = $mform->get_data()) || isset($idnumber) === true) {
         } else {
             // Cas où l'étudiant doit déposer des fichiers.
             $fs = get_file_storage();
-            [$component, $itemid] = ['local_apsolu', $record->id];
-            $sort = 'itemid, filepath, filename';
-            $files = [];
-            foreach (['medicalcertificate', 'parentalauthorization'] as $filearea) {
-                $files = array_merge($files, $fs->get_area_files(
-                    $context->id,
-                    $component,
-                    $filearea,
-                    $itemid,
-                    $sort,
-                    $includedirs = false
-                ));
-            }
+            $files = $fs->get_area_files(
+                $context->id,
+                $component = 'local_apsolu',
+                $filearea = 'medicalcertificate',
+                $itemid = $record->id,
+                $sort = 'itemid, filepath, filename',
+                $includedirs = false
+            );
 
             if (count($files) === 0) {
                 $row[] = get_string('no_files', 'local_apsolu');
@@ -185,28 +177,20 @@ if (($data = $mform->get_data()) || isset($idnumber) === true) {
                 foreach ($files as $file) {
                     $url = moodle_url::make_pluginfile_url(
                         $context->id,
-                        $component,
+                        $component = 'local_apsolu',
                         $file->get_filearea(),
-                        $itemid,
+                        $itemid = $record->id,
                         '/',
                         $file->get_filename(),
                         $forcedownload = false,
                         $includetoken = false
                     );
 
-                    if ($file->get_filearea() === 'parentalauthorization') {
-                        $areaicon = html_writer::tag('i', '', [
-                            'aria-label' => get_string('parental_authorization', 'local_apsolu'),
-                            'class' => 'icon fa fa-solid fa-fw fa-baby',
-                            'role' => 'img',
-                        ]);
-                    } else {
-                        $areaicon = html_writer::tag('i', '', [
-                            'aria-label' => get_string('medical_certificate', 'local_apsolu'),
-                            'class' => 'icon fa fa-solid fa-fw fa-kit-medical',
-                            'role' => 'img',
-                        ]);
-                    }
+                    $areaicon = html_writer::tag('i', '', [
+                        'aria-label' => get_string('medical_certificate', 'local_apsolu'),
+                        'class' => 'icon fa fa-solid fa-fw fa-kit-medical',
+                        'role' => 'img',
+                    ]);
 
                     $date = userdate($file->get_timemodified(), get_string('strftimedateshort', 'local_apsolu'));
                     $clockicon = html_writer::tag('i', '', ['class' => 'icon fa fa-clock-o fa-fw', 'role' => 'img']);
@@ -248,10 +232,10 @@ if (($data = $mform->get_data()) || isset($idnumber) === true) {
                     $cell->text = get_string('medical_certificate_validated', 'local_apsolu');
                     $cell->attributes = ['class' => 'medical-certificate-status table-success', 'data-userid' => $record->id];
                     $row[] = $cell;
-                } else if ($adhesion->have_to_upload_parental_authorization() === true) {
-                    // Lorsque l'étudiant a déposé seulement une autorisation parentale.
-                    $cell = new html_table_cell('');
-                    $cell->attributes = ['class' => 'medical-certificate-status', 'data-userid' => $record->id];
+                } else {
+                    // Ne devrait jamais arriver.
+                    $cell = new html_table_cell(get_string('error'));
+                    $cell->attributes = ['class' => 'table-danger'];
                     $row[] = $cell;
                 }
             }
