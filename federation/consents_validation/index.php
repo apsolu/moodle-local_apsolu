@@ -101,6 +101,13 @@ if (($data = $mform->get_data()) || isset($idnumber) === true) {
             continue;
         }
 
+        $birthdate = new DateTime();
+        $birthdate->setTimestamp($adhesion->birthday);
+        $age = $birthdate->diff(new DateTime())->y;
+        if ($age >= 18) {
+            continue;
+        }
+
         $profileurl = new moodle_url('/user/view.php', ['id' => $record->id, 'course' => $courseid]);
 
         $row = [];
@@ -136,9 +143,6 @@ if (($data = $mform->get_data()) || isset($idnumber) === true) {
         $row[] = html_writer::alist($activities, $attributes = [], $tag = 'ul');
 
         // Affichage de la date de naissance.
-        $birthdate = new DateTime();
-        $birthdate->setTimestamp($adhesion->birthday);
-        $age = $birthdate->diff(new DateTime())->y;
         $row[] = userdate($adhesion->birthday, get_string('strftimedate')) . ' (' . $age . ' ans)';
 
         // Affiche la colonne pour afficher les fichiers.
