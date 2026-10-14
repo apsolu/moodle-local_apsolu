@@ -58,6 +58,12 @@ $certificates = [
     APSOLU_SELECT_NO => get_string('medical_certificate_not_validated', 'local_apsolu'),
 ];
 
+$consents = [
+    APSOLU_SELECT_ANY => get_string('all'),
+    APSOLU_SELECT_YES => get_string('parental_consent_validated', 'local_apsolu'),
+    APSOLU_SELECT_NO => get_string('parental_consent_not_validated', 'local_apsolu'),
+];
+
 $licenses = [
     APSOLU_SELECT_ANY => get_string('all'),
     APSOLU_SELECT_YES => get_string('license_number_assigned', 'local_apsolu'),
@@ -81,7 +87,7 @@ foreach (FederationActivity::get_records(null, $sort = 'name') as $record) {
 
 $constraintactivities = FederationActivity::get_records(['restriction' => 1], $sort = 'name');
 
-$customdata = ['numbers' => $numbers, 'payments' => $payments, 'certificates' => $certificates,
+$customdata = ['numbers' => $numbers, 'payments' => $payments, 'certificates' => $certificates, 'consents' => $consents,
     'licenses' => $licenses, 'statuses' => $statuses, 'licensetypes' => $licensetypes, 'activities' => $activities];
 $mform = new local_apsolu_federation_export_licenses(null, $customdata);
 
@@ -189,6 +195,15 @@ if ($data = $mform->get_data()) {
             if ($data->medical === APSOLU_SELECT_YES && empty($record->medicalcertificatestatus) === true) {
                 continue;
             } else if ($data->medical === APSOLU_SELECT_NO && empty($record->medicalcertificatestatus) === false) {
+                continue;
+            }
+        }
+
+        // Etat de l'autorisation parentale.
+        if (empty($data->consent) === false) {
+            if ($data->consent === APSOLU_SELECT_YES && empty($record->parentalconsentstatus) === true) {
+                continue;
+            } else if ($data->consent === APSOLU_SELECT_NO && empty($record->parentalconsentstatus) === false) {
                 continue;
             }
         }

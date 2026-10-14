@@ -36,6 +36,7 @@ class local_apsolu_federation_export_licenses extends moodleform {
         $numbers = $this->_customdata['numbers'];
         $payments = $this->_customdata['payments'];
         $certificates = $this->_customdata['certificates'];
+        $consents = $this->_customdata['consents'];
         $licenses = $this->_customdata['licenses'];
         $statuses = $this->_customdata['statuses'];
         $licensetypes = $this->_customdata['licensetypes'];
@@ -70,6 +71,11 @@ class local_apsolu_federation_export_licenses extends moodleform {
         $mform->addElement('select', 'medical', get_string('medical_certificate_status', 'local_apsolu'), $certificates);
         $mform->setType('medical', PARAM_INT);
         $mform->setDefault('medical', APSOLU_SELECT_YES);
+
+        // Etat de l'autorisation parentale.
+        $mform->addElement('select', 'consent', get_string('parental_consent_status', 'local_apsolu'), $consents);
+        $mform->setType('consent', PARAM_INT);
+        $mform->setDefault('consent', APSOLU_SELECT_YES);
 
         // Etat du numéro de licence.
         $mform->addElement('select', 'licensenumber', get_string('license_number_status', 'local_apsolu'), $licenses);
