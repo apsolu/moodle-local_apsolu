@@ -301,8 +301,8 @@ class adhesion extends record {
      * @return action_menu|null Retourne null si aucune action n'est disponible pour l'utilisateur donné.
      */
     public function get_medical_certificate_action_menu(int|string $userid, int|string $contextid): ?action_menu {
-        if (empty($this->federationnumberrequestdate) === true) {
-            // L'utilisateur n'a pas encore validé sa demande.
+        if (empty($this->federationnumberrequestdate) === true || empty($this->timelicensed) === false) {
+            // L'utilisateur n'a pas encore validé sa demande ou est déjà licencié.
             return null;
         }
 
@@ -402,8 +402,8 @@ class adhesion extends record {
      * @return action_menu|null Retourne null si aucune action n'est disponible pour l'utilisateur donné.
      */
     public function get_parental_consent_action_menu(int|string $userid, int|string $contextid): ?action_menu {
-        if (empty($this->federationnumberrequestdate) === true) {
-            // L'utilisateur n'a pas encore validé sa demande.
+        if (empty($this->federationnumberrequestdate) === true || empty($this->timelicensed) === false) {
+            // L'utilisateur n'a pas encore validé sa demande ou est déjà licencié.
             return null;
         }
 
