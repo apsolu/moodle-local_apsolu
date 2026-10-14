@@ -2596,5 +2596,34 @@ function xmldb_local_apsolu_upgrade($oldversion = 0) {
         }
     }
 
+    $version = 2026101400;
+    if ($oldversion < $version) {
+        // Supprime les tables apsolu_courses et apsolu_complements.
+        $tables = ['apsolu_courses', 'apsolu_complements'];
+        foreach ($tables as $tablename) {
+            $table = new xmldb_table($tablename);
+            if ($dbman->table_exists($table) === true) {
+                $dbman->drop_table($table);
+            }
+        }
+
+        // Ajoute 1 champ `parentalconsentstatus` dans la table `apsolu_federation_adhesions`.
+        $table = new xmldb_table('apsolu_federation_adhesions');
+        $field = new xmldb_field(
+            'parentalconsentstatus',
+            XMLDB_TYPE_INTEGER,
+            '10',
+            XMLDB_UNSIGNED,
+            $nullable = null,
+            $sequence = null,
+            $default = 0,
+            $previous = 'medicalcertificatestatus'
+        );
+
+        if ($dbman->field_exists($table, $field) === false) {
+            $dbman->add_field($table, $field);
+        }
+    }
+
     return true;
 }
