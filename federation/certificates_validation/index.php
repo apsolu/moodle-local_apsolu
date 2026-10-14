@@ -42,7 +42,7 @@ $certificates = [
 ];
 
 $customdata = ['certificates' => $certificates];
-$mform = new local_apsolu_federation_certificates_validation(null, $customdata);
+$mform = new local_apsolu_federation_certificates_validation($PAGE->url->out(false), $customdata);
 
 $content = '';
 if (($data = $mform->get_data()) || isset($idnumber) === true) {

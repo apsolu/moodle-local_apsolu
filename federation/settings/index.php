@@ -67,7 +67,7 @@ foreach ($DB->get_records('cohort', $conditions = null, $sort = 'name') as $coho
 
 // Build form.
 $customdata = [$defaults, $cohorts];
-$mform = new local_apsolu_settings_form(null, $customdata);
+$mform = new local_apsolu_settings_form($PAGE->url->out(false), $customdata);
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('settings'));

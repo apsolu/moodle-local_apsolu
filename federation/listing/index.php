@@ -99,7 +99,7 @@ ksort($departments);
 
 // Build form.
 $customdata = [$activities, $sexes, $institutions, $ufrs, $departments];
-$mform = new local_apsolu_federation_export_form(null, $customdata);
+$mform = new local_apsolu_federation_export_form($PAGE->url->out(false), $customdata);
 
 if ($data = $mform->get_data()) {
     $fields = fields::for_userpic()->get_sql('u');

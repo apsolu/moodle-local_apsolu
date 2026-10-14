@@ -89,7 +89,7 @@ $constraintactivities = FederationActivity::get_records(['restriction' => 1], $s
 
 $customdata = ['numbers' => $numbers, 'payments' => $payments, 'certificates' => $certificates, 'consents' => $consents,
     'licenses' => $licenses, 'statuses' => $statuses, 'licensetypes' => $licensetypes, 'activities' => $activities];
-$mform = new local_apsolu_federation_export_licenses(null, $customdata);
+$mform = new local_apsolu_federation_export_licenses($PAGE->url->out(false), $customdata);
 
 $content = '';
 if ($data = $mform->get_data()) {

@@ -47,7 +47,7 @@ if (empty(get_config('local_apsolu', 'enable_pass_sport_payment')) === true) {
     ];
 
     $customdata = ['pass_sport' => $passsport];
-    $mform = new local_apsolu_federation_pass_sport_validation(null, $customdata);
+    $mform = new local_apsolu_federation_pass_sport_validation($PAGE->url->out(false), $customdata);
 }
 
 if ($mform !== null && (($data = $mform->get_data()) || isset($idnumber) === true)) {

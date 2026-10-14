@@ -52,7 +52,7 @@ foreach ($DB->get_records_sql($sql, ['categoryid' => $activity->categoryid]) as 
 
 // Build form.
 $customdata = ['activity' => $activity, 'categories' => $categories];
-$mform = new local_apsolu_federation_activities_edit_form(null, $customdata);
+$mform = new local_apsolu_federation_activities_edit_form($PAGE->url->out(false), $customdata);
 
 if ($data = $mform->get_data()) {
     // Message à afficher à la fin de l'enregistrement.

@@ -37,7 +37,7 @@ require_once(__DIR__ . '/import_form.php');
 $context = context_course::instance($courseid, MUST_EXIST);
 $returnurl = new moodle_url('/local/apsolu/federation/index.php', ['page' => 'import']);
 
-$mform = new local_apsolu_federation_import_licences();
+$mform = new local_apsolu_federation_import_licences($PAGE->url->out(false));
 
 if ($formdata = $mform->get_data()) {
     $iid = csv_import_reader::get_new_iid('local_apsolu_federation_import');
@@ -209,7 +209,7 @@ if (isset($formdata->previewbutton) === true) {
     $previewtable = html_writer::tag('div', html_writer::table($table), ['class' => 'flexible-wrap']);
 
     // On régénère le formulaire pour afficher l'aperçu et permettre l'association des colonnes.
-    $mform = new local_apsolu_federation_import_licences(null, [$columns, $previewtable]);
+    $mform = new local_apsolu_federation_import_licences($PAGE->url->out(false), [$columns, $previewtable]);
 }
 
 $mform->display();
