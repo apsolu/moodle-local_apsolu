@@ -696,6 +696,18 @@ $string['overview_of_using_payments'] = 'Vue d’ensemble tarifs et usages';
 $string['parental_authorization'] = 'Autorisation parentale';
 $string['parental_authorization_description'] = 'Texte de présentation pour les autorisations parentales';
 $string['parental_authorization_description_help'] = 'Texte de présentation afficher aux utilisateurs ayant besoin d’une autorisation parentale.';
+$string['parental_consent_awaiting_validation'] = 'Autorisation parentale en attente de validation';
+$string['parental_consent_not_required'] = 'Autorisation parentale non requise';
+$string['parental_consent_not_validated'] = 'Autorisation parentale non validée';
+$string['parental_consent_refusal_message_body'] = '<p></p>';
+$string['parental_consent_refusal_message_subject'] = '[FFSU] Refus de votre autorisation parentale';
+$string['parental_consent_status'] = 'État de l’autorisation parentale';
+$string['parental_consents_validation'] = 'Validation des autorisations parentales';
+$string['parental_consent_validated'] = 'Autorisation parentale validée';
+$string['parental_consent_validation_message_body'] = '<p>Bonjour,</p>
+<p>Votre autorisation parentale pour la FFSU a été validée.</p>
+<p>Cordialement,</p>';
+$string['parental_consent_validation_message_subject'] = '[FFSU] Validation de votre autorisation parentale';
 $string['partial_amount'] = 'sur une partie du montant';
 $string['pass_sport_help'] = 'Obtenir plus d’information sur le <a href="https://www.pass.sports.gouv.fr/#:~:text=Qu\'est-ce%20que%20le%20pass%20Sport">Pass Sport</a>.';
 $string['pass_sport_not_validated'] = 'Pass Sport non validé';

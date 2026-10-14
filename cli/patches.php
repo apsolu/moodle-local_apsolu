@@ -40,6 +40,23 @@ try {
         }
     }
 
+    // Ajoute 1 champ `parentalconsentstatus` dans la table `apsolu_federation_adhesions`.
+    $table = new xmldb_table('apsolu_federation_adhesions');
+    $field = new xmldb_field(
+        'parentalconsentstatus',
+        XMLDB_TYPE_INTEGER,
+        '10',
+        XMLDB_UNSIGNED,
+        $nullable = null,
+        $sequence = null,
+        $default = 0,
+        $previous = 'medicalcertificatestatus'
+    );
+
+    if ($dbman->field_exists($table, $field) === false) {
+        $dbman->add_field($table, $field);
+    }
+
     mtrace(get_string('success'));
 } catch (Exception $exception) {
     mtrace(get_string('error'));

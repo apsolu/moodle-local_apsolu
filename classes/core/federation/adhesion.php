@@ -75,6 +75,21 @@ class adhesion extends record {
     const MEDICAL_CERTIFICATE_STATUS_EXEMPTED = '2';
 
     /**
+     * État de l'autorisation parentale lorsqu'elle est en attente de validation.
+     */
+    const PARENTAL_CONSENT_STATUS_PENDING = '0';
+
+    /**
+     * État de l'autorisation parentale lorsqu'elle a été validée.
+     */
+    const PARENTAL_CONSENT_STATUS_VALIDATED = '1';
+
+    /**
+     * État de l'autorisation parentale lorsqu'elle ne doit pas être fournie.
+     */
+    const PARENTAL_CONSENT_STATUS_EXEMPTED = '2';
+
+    /**
      * Pattern du Pass Sport.
      *
      * Le pass Sport prend la forme d'un code composé de 10 caractères alphanumériques, différents de ceux de 2024.
@@ -116,6 +131,9 @@ class adhesion extends record {
 
     /** @var int|string $medicalcertificatestatus État de validation du certificat médical. */
     public $medicalcertificatestatus = null;
+
+    /** @var int|string $parentalconsentstatus État de validation de l'autorisation parental. */
+    public $parentalconsentstatus = null;
 
     /** @var int|string $questionnairestatus État des réponses au questionnaire médical. */
     public $questionnairestatus = null;
@@ -343,6 +361,85 @@ class adhesion extends record {
             ];
         }
 
+        $actionmenu = new action_menu();
+        $actionmenu->attributessecondary['class'] .= ' apsolu-dropdown-menu';
+        $actionmenu->set_menu_trigger(get_string('edit'));
+
+        foreach ($menuoptions as $value) {
+            $menulink = new action_menu_link_secondary(
+                new moodle_url(''),
+                new pix_icon($value['icon'], '', null, ['class' => 'smallicon']),
+                $value['label'],
+                $value['attributes'],
+            );
+            $actionmenu->add($menulink);
+        }
+
+        return $actionmenu;
+    }
+
+    /**
+     * Retourne le menu d'actions permettant aux gestionnaires de valider ou refuser une adhésion sur la page de validation des
+     * attestations parentales.
+     *
+     * @param int|string $userid Identifiant de l'utilisateur ayant réalisé une demande.
+     * @param int|string $contextid Identifiant du contexte du cours FFSU.
+     *
+     * @return action_menu|null Retourne null si aucune action n'est disponible pour l'utilisateur donné.
+     */
+    public function get_parental_consent_action_menu(int|string $userid, int|string $contextid): ?action_menu {
+        if (empty($this->federationnumberrequestdate) === true) {
+            // L'utilisateur n'a pas encore validé sa demande.
+            return null;
+        }
+
+        $menuoptions = [];
+
+        $attributes = [
+            'class' => 'local-apsolu-federation-parental-consent-validation',
+            'data-contextid' => $contextid,
+            'data-target-validation' => self::PARENTAL_CONSENT_STATUS_VALIDATED,
+            'data-target-validation-color' => 'table-success',
+            'data-target-validation-text' => get_string('parental_consent_validated', 'local_apsolu'),
+            'data-users' => $userid,
+        ];
+
+        if ($this->parentalconsentstatus !== self::PARENTAL_CONSENT_STATUS_EXEMPTED) {
+            // Option permettant la validation de l'autorisation parentale.
+            $attributes['data-stringid'] = 'parental_consent_validation_message';
+            $menuoptions[] = [
+                'attributes' => $attributes,
+                'icon' => 'i/grade_correct',
+                'label' => get_string('validate', 'local_apsolu'),
+            ];
+
+            if (
+                empty($this->federationnumber) === true &&
+                $this->parentalconsentstatus === Adhesion::PARENTAL_CONSENT_STATUS_VALIDATED
+            ) {
+                $menuoptions[0]['attributes']['class'] .= ' d-none'; // Supprime l'option de validation.
+            }
+
+            // Option permettant le refus de l'autorisation parentale.
+            $attributes['data-stringid'] = 'parental_consent_refusal_message';
+            $attributes['data-target-validation'] = self::PARENTAL_CONSENT_STATUS_PENDING;
+            $attributes['data-target-validation-color'] = 'table-warning';
+            $attributes['data-target-validation-text'] = get_string('parental_consent_not_validated', 'local_apsolu');
+        } else {
+            // Option permettant le refus de l'autorisation parentale.
+            $attributes['data-stringid'] = 'parental_consent_refusal_message';
+            $attributes['data-target-validation'] = self::PARENTAL_CONSENT_STATUS_EXEMPTED;
+            $attributes['data-target-validation-color'] = 'table-info';
+            $attributes['data-target-validation-text'] = get_string('parental_consent_not_required', 'local_apsolu');
+        }
+
+        $menuoptions[] = [
+            'attributes' => $attributes,
+            'icon' => 'i/grade_incorrect',
+            'label' => get_string('refuse', 'local_apsolu'),
+        ];
+
+        // Construit le menu d'actions.
         $actionmenu = new action_menu();
         $actionmenu->attributessecondary['class'] .= ' apsolu-dropdown-menu';
         $actionmenu->set_menu_trigger(get_string('edit'));
@@ -1662,6 +1759,29 @@ class adhesion extends record {
                     // TODO: supprimer le fichier.
 
                     $this->medicalcertificatestatus = self::MEDICAL_CERTIFICATE_STATUS_EXEMPTED;
+                }
+            }
+
+            // Recalcule l'état attendu de l'attestation parentale lorsqu'elle n'a pas été validée.
+            if ($this->parentalconsentstatus !== self::PARENTAL_CONSENT_STATUS_VALIDATED) {
+                if ($this->have_to_upload_parental_authorization() === true) {
+                    $this->parentalconsentstatus = self::PARENTAL_CONSENT_STATUS_PENDING;
+                } else {
+                    // Nettoie les données.
+                    $json->titleprimarylegalrepresentative = '';
+                    $json->lastnameprimarylegalrepresentative = '';
+                    $json->firstnameprimarylegalrepresentative = '';
+                    $json->phoneprimarylegalrepresentative = '';
+                    $json->emailprimarylegalrepresentative = '';
+                    $json->titlesecondarylegalrepresentative = '';
+                    $json->lastnamesecondarylegalrepresentative = '';
+                    $json->firstnamesecondarylegalrepresentative = '';
+                    $json->phonesecondarylegalrepresentative = '';
+                    $json->emailsecondarylegalrepresentative = '';
+
+                    // TODO: supprimer le fichier.
+
+                    $this->parentalconsentstatus = self::PARENTAL_CONSENT_STATUS_EXEMPTED;
                 }
             }
 
