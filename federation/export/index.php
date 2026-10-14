@@ -129,6 +129,8 @@ if ($data = $mform->get_data()) {
         $conditions[] = " AND u.idnumber LIKE :idnumber ";
     }
 
+    $majoritydate = strtotime('-18 years');
+
     $sql = "SELECT u.id AS userid, u.lastname, u.firstname, u.email, adh.*
               FROM {apsolu_federation_adhesions} adh
               JOIN {user} u ON u.id = adh.userid
@@ -140,6 +142,11 @@ if ($data = $mform->get_data()) {
     $rows = [];
     $recordset = $DB->get_recordset_sql($sql, $parameters);
     foreach ($recordset as $record) {
+        // On ne traite pas les comptes dont la date ne naissance n'est pas configurée.
+        if (empty($record->birthday) === true) {
+            continue;
+        }
+
         // Numéro AS.
         if (empty($data->numbers) === false) {
             $found = false;
@@ -201,6 +208,11 @@ if ($data = $mform->get_data()) {
 
         // Etat de l'autorisation parentale.
         if (empty($data->consent) === false) {
+            if ($record->birthday <= $majoritydate) {
+                // Traite le cas des utilisateurs qui seraient devenus majeurs après leur demande d'adhésion.
+                $record->parentalconsentstatus = FederationAdhesion::PARENTAL_CONSENT_STATUS_EXEMPTED;
+            }
+
             if ($data->consent === APSOLU_SELECT_YES && empty($record->parentalconsentstatus) === true) {
                 continue;
             } else if ($data->consent === APSOLU_SELECT_NO && empty($record->parentalconsentstatus) === false) {
