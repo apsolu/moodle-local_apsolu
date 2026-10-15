@@ -76,7 +76,6 @@ foreach ($recordset as $record) {
         continue;
     }
 
-    $countreceivers++;
     if (isset($users[$other->receiver]) === false) {
         continue;
     }
