@@ -64,6 +64,14 @@ foreach ($recordset as $record) {
         continue;
     }
 
+    if (is_array($other) === true) {
+        $other = (object) $other;
+    }
+
+    if (isset($other->communicationid) === false) {
+        continue;
+    }
+
     if ($id !== $other->communicationid) {
         continue;
     }
