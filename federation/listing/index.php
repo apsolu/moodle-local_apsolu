@@ -172,12 +172,12 @@ if ($data = $mform->get_data()) {
 
         // Champ activités.
         if (isset($data->activities[0]) === true) {
-            if (isset($json->activity) === false) {
+            if (isset($json->activities) === false) {
                 continue;
             }
 
             $found = false;
-            foreach ($json->activity as $activity) {
+            foreach ($json->activities as $activity) {
                 if (in_array($activity, $data->activities, $strict = true) === false) {
                     continue;
                 }
@@ -215,8 +215,8 @@ if ($data = $mform->get_data()) {
         $user->checkbox = $OUTPUT->render($checkbox);
         $user->htmlpicture = $OUTPUT->user_picture($user, ['courseid' => $courseid]);
         $user->activities = '';
-        if (is_array($json->activity) === true) {
-            $user->activities = implode(', ', $json->activity);
+        if (is_array($json->activities) === true) {
+            $user->activities = implode(', ', $json->activities);
         }
         $user->title = $json->title;
 
