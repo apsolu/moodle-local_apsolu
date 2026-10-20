@@ -33,7 +33,7 @@ $report = new report();
 $data = new stdClass();
 $render = $PAGE->get_renderer('local_apsolu');
 
-if ($CFG->is_siuaps_rennes) {
+if (isset($CFG->is_siuaps_rennes) === true) {
     $data->is_siuaps_rennes = $CFG->is_siuaps_rennes;
 }
 
@@ -172,7 +172,7 @@ $data->enrol_userprofile['chart'] = $render->render_chart(['classname' => 'popul
 $data->enrol_genders['title'] = $report->getReport("enrol_genders")->label;
 $data->enrol_genders['chart'] = $render->render_chart(['classname' => 'population', 'reportid' => 'enrol_genders',
     'criterias' => ['cities' => array_values($cities), 'calendarstypes' => array_values($calendarstypes)]]);
-if ($CFG->is_siuaps_rennes) {
+if (isset($CFG->is_siuaps_rennes) === true) {
     // INSCRITS : Nombre de sportif de haut niveau inscrit à une pratique une activité physique / complémentaire.
     $data->shnu_user['title'] = $report->getReport("custom_apsoluhighlevelathlete")->label;
     $data->shnu_user['chart'] = $render->render_chart(['classname' => 'population', 'reportid' => 'custom_apsoluhighlevelathlete']);

@@ -51,7 +51,7 @@ class report {
         $model = json_decode($jsonmodeldata);
 
         // Custom reports.
-        if ($CFG->is_siuaps_rennes) {
+        if (isset($CFG->is_siuaps_rennes) === true) {
             $model->reports = array_merge($model->reports, $model->reportsCustomRennes);
         }
 
@@ -89,7 +89,7 @@ class report {
         $model = json_decode($jsonmodeldata);
 
         // Custom filter.
-        if ($CFG->is_siuaps_rennes) {
+        if (isset($CFG->is_siuaps_rennes) === true) {
             $model->filters = array_merge($model->filters, $model->filtersCustomRennes);
         }
 

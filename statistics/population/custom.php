@@ -36,7 +36,7 @@ $PAGE->requires->jquery();
 $PAGE->requires->css(new moodle_url('/local/apsolu/lib/jquery/jQuery-QueryBuilder/css/query-builder.default.min.css'));
 $PAGE->requires->css(new moodle_url('/local/apsolu/lib/jquery/DataTables/datatables.min.css'));
 
-if ($CFG->is_siuaps_rennes) {
+if (isset($CFG->is_siuaps_rennes) === true) {
     $data->is_siuaps_rennes = $CFG->is_siuaps_rennes;
 }
 $data->Filters = $report->getFilters();

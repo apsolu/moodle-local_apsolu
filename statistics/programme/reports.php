@@ -35,7 +35,7 @@ $PAGE->requires->css('/local/apsolu/lib/jquery/DataTables/datatables.min.css');
 
 // Data.
 $data = new stdClass();
-if ($CFG->is_siuaps_rennes) {
+if (isset($CFG->is_siuaps_rennes) === true) {
     $data->is_siuaps_rennes = $CFG->is_siuaps_rennes;
 }
 

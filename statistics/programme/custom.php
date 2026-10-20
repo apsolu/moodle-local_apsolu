@@ -41,7 +41,7 @@ $PAGE->requires->css(
     new moodle_url('/local/apsolu/lib/jquery/bootstrap-datetimepicker/css/bootstrap-datetimepicker-standalone.css')
 );
 
-if ($CFG->is_siuaps_rennes) {
+if (isset($CFG->is_siuaps_rennes) === true) {
     $data->is_siuaps_rennes = $CFG->is_siuaps_rennes;
 }
 $data->Filters = $report->getFilters();
