@@ -94,6 +94,7 @@ class report extends \local_apsolu\local\statistics\report {
       	INNER JOIN {course_categories} Grouping on Grouping.id = Activity.parent
       	LEFT JOIN {apsolu_calendars} AC ON AC.id = E.customchar1
       	LEFT JOIN {apsolu_calendars_types} ACT ON ACT.id = AC.typeid
+            WHERE C.visible = 1
          ORDER BY Grouping.id, Activity.id
       ) ';
     }
