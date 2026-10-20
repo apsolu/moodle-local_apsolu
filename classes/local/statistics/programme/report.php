@@ -104,6 +104,10 @@ class report extends \local_apsolu\local\statistics\report {
      * @return array
      */
     public function getReportDisplay() {
+        global $CFG;
+
+        require_once($CFG->dirroot . '/enrol/select/lib.php');
+
         $columns = [
           [ 'data' => "groupname", 'title' => get_string("statistics_groupe", 'local_apsolu')],
           [ 'data' => "activityname", 'title' => get_string("activity", 'local_apsolu')],
