@@ -47,36 +47,46 @@ class report extends \local_apsolu\local\statistics\report {
 
         // Note: SET lc_time_names = 'fr_FR'.
         $this->WithProgramme = 'WITH programme AS (
-      	SELECT
-      		Grouping.id as groupid, Grouping.name as groupname,
-      		Activity.id as activityid, Activity.name as activityname,
-      		AC.id as calendarid, AC.name as calendarname,
-      		ACT.id as calendartypeid,ACT.name as calendartypename,
-      		ACI.id as cityid,ACI.name as cityname,
-            C.id as slotid, CUSTOMDATA2.charvalue as slotevent, CUSTOMDATA3.intvalue as slotnumweekday,
-                DAYNAME(CONCAT("1970-09-2", CUSTOMDATA3.intvalue)) as slotweekday,
-            CONCAT(
-                JSON_EXTRACT(CUSTOMDATA4.shortcharvalue, \'$.start.hour\'), \':\',
-                JSON_EXTRACT(CUSTOMDATA4.shortcharvalue, \'$.start.minute\')
-            ) AS slotstart,
-            CONCAT(
-                JSON_EXTRACT(CUSTOMDATA4.shortcharvalue, \'$.end.hour\'), \':\',
-                JSON_EXTRACT(CUSTOMDATA4.shortcharvalue, \'$.end.minute\')
-            ) AS slotend,
-      		CASE WHEN E.customint3 THEN \'Oui\' ELSE \'Non\' END AS \'actifQuota\',
-      		E.customint1 AS \'mainQuota\',
-      	 	E.customint2 AS \'waitQuota\',
-            CASE WHEN E.customint4 = 0 THEN \'\'
-                    ELSE DATE_FORMAT(FROM_UNIXTIME(E.customint4),\'%d/%m/%Y %H:%i\') END AS \'reenrolstartdate\',
-                  CASE WHEN E.customint5 = 0 THEN \'\'
-                    ELSE DATE_FORMAT(FROM_UNIXTIME(E.customint5),\'%d/%m/%Y %H:%i\') END AS \'reenrolenddate\',
-                  CASE WHEN E.customint7 = 0 THEN \'\'
-                    ELSE DATE_FORMAT(FROM_UNIXTIME(E.customint7),\'%d/%m/%Y\') END AS \'coursestartdate\',
-                  CASE WHEN E.customint8 = 0 THEN \'\'
-                    ELSE DATE_FORMAT(FROM_UNIXTIME(E.customint8),\'%d/%m/%Y\') END AS \'courseenddate\',
-          AL.id as placeid, AL.name as placename, AL.address as placeaddress
-      	FROM {course} C
-      	INNER JOIN {enrol} E ON E.courseid = C.id AND E.enrol = \'select\'
+           SELECT Grouping.id as groupid, Grouping.name as groupname,
+                  Activity.id as activityid, Activity.name as activityname,
+                  AC.id as calendarid, AC.name as calendarname,
+                  ACT.id as calendartypeid,ACT.name as calendartypename,
+                  ACI.id as cityid,ACI.name as cityname,
+                  C.id as slotid, CUSTOMDATA2.charvalue as slotevent, CUSTOMDATA3.intvalue as slotnumweekday,
+                  DAYNAME(CONCAT("1970-09-2", CUSTOMDATA3.intvalue)) as slotweekday,
+                  CONCAT(
+                         JSON_EXTRACT(CUSTOMDATA4.shortcharvalue, \'$.start.hour\'), \':\',
+                         JSON_EXTRACT(CUSTOMDATA4.shortcharvalue, \'$.start.minute\')
+                        ) AS slotstart,
+                  CONCAT(
+                         JSON_EXTRACT(CUSTOMDATA4.shortcharvalue, \'$.end.hour\'), \':\',
+                         JSON_EXTRACT(CUSTOMDATA4.shortcharvalue, \'$.end.minute\')
+                        ) AS slotend,
+                  CASE WHEN E.customint3
+                       THEN \'Oui\'
+                       ELSE \'Non\'
+                        END AS \'actifQuota\',
+                  E.customint1 AS \'mainQuota\',
+                  E.customint2 AS \'waitQuota\',
+                  CASE WHEN E.customint4 = 0
+                       THEN \'\'
+                       ELSE DATE_FORMAT(FROM_UNIXTIME(E.customint4),\'%d/%m/%Y %H:%i\')
+                        END AS \'reenrolstartdate\',
+                  CASE WHEN E.customint5 = 0
+                       THEN \'\'
+                       ELSE DATE_FORMAT(FROM_UNIXTIME(E.customint5),\'%d/%m/%Y %H:%i\')
+                        END AS \'reenrolenddate\',
+                  CASE WHEN E.customint7 = 0
+                       THEN \'\'
+                       ELSE DATE_FORMAT(FROM_UNIXTIME(E.customint7),\'%d/%m/%Y\')
+                        END AS \'coursestartdate\',
+                  CASE WHEN E.customint8 = 0
+                       THEN \'\'
+                       ELSE DATE_FORMAT(FROM_UNIXTIME(E.customint8),\'%d/%m/%Y\')
+                        END AS \'courseenddate\',
+                  AL.id as placeid, AL.name as placename, AL.address as placeaddress
+             FROM {course} C
+       INNER JOIN {enrol} E ON E.courseid = C.id AND E.enrol = \'select\'
        INNER JOIN {customfield_data} CUSTOMDATA1 ON CUSTOMDATA1.instanceid = C.id
                                                 AND CUSTOMDATA1.fieldid = ' . $customfields['type']->id . '
        INNER JOIN {customfield_data} CUSTOMDATA2 ON CUSTOMDATA2.instanceid = C.id
@@ -87,13 +97,13 @@ class report extends \local_apsolu\local\statistics\report {
                                                 AND CUSTOMDATA4.fieldid = ' . $customfields['timerange']->id . '
        INNER JOIN {customfield_data} CUSTOMDATA5 ON CUSTOMDATA5.instanceid = C.id
                                                 AND CUSTOMDATA5.fieldid = ' . $customfields['location']->id . '
-      	INNER JOIN {apsolu_locations} AL ON AL.id = CUSTOMDATA5.intvalue
-      	INNER JOIN {apsolu_areas} AA ON AA.id = AL.areaId
-      	INNER JOIN {apsolu_cities} ACI ON ACI.id = AA.cityId
-      	INNER JOIN {course_categories} Activity ON Activity.id = C.category
-      	INNER JOIN {course_categories} Grouping on Grouping.id = Activity.parent
-      	LEFT JOIN {apsolu_calendars} AC ON AC.id = E.customchar1
-      	LEFT JOIN {apsolu_calendars_types} ACT ON ACT.id = AC.typeid
+       INNER JOIN {apsolu_locations} AL ON AL.id = CUSTOMDATA5.intvalue
+       INNER JOIN {apsolu_areas} AA ON AA.id = AL.areaId
+       INNER JOIN {apsolu_cities} ACI ON ACI.id = AA.cityId
+       INNER JOIN {course_categories} Activity ON Activity.id = C.category
+       INNER JOIN {course_categories} Grouping on Grouping.id = Activity.parent
+        LEFT JOIN {apsolu_calendars} AC ON AC.id = E.customchar1
+        LEFT JOIN {apsolu_calendars_types} ACT ON ACT.id = AC.typeid
             WHERE C.visible = 1
          ORDER BY Grouping.id, Activity.id
       ) ';
