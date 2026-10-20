@@ -137,7 +137,8 @@ class Payment {
 
         $sql = "SELECT DISTINCT apc.id, apc.code, apc.name, apc.fullname, apc.trial, apc.price, apc.centerid
                   FROM {apsolu_payments_cards} apc
-                  JOIN {apsolu_payments} ap
+                  JOIN {apsolu_payments_items} api ON apc.id = api.cardid
+                  JOIN {apsolu_payments} ap ON ap.id = api.paymentid
                  WHERE ap.userid = :userid
                    AND ap.timepaid IS NOT NULL
                    AND ap.status != :due
