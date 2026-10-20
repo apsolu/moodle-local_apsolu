@@ -237,7 +237,10 @@ class report {
      * @return string le chaîne de caractères chargée dans le fichier de langues.
      */
     public static function get_report_title($columntitle): string {
-        [$stringid, $component, $a] = explode(',', $columntitle);
+        $elements = explode(',', $columntitle);
+        $stringid = $elements[0] ?? '';
+        $component = $elements[1] ?? '';
+        $a = $elements[2] ?? '';
 
         if (empty($a) == false) {
             // On vérifie si le paramètre dynamique correspond au pattern list:STATUT ( Ex. list:ACCEPTED ou list:[ACCEPTED;WAIT] ).
