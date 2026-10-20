@@ -122,6 +122,30 @@ class Payment {
     }
 
     /**
+     * Retourne pour un utilisateur donné, la liste des cartes soldées (payées, offertes, etc).
+     *
+     * @param int|null $userid Si null, le $userid sera calculé en fonction de l'utilisateur courant.
+     *
+     * @return array
+     */
+    public static function get_user_settled_cards($userid = null): array {
+        global $DB, $USER;
+
+        if ($userid === null) {
+            $userid = $USER->id;
+        }
+
+        $sql = "SELECT DISTINCT apc.id, apc.code, apc.name, apc.fullname, apc.trial, apc.price, apc.centerid
+                  FROM {apsolu_payments_cards} apc
+                  JOIN {apsolu_payments} ap
+                 WHERE ap.userid = :userid
+                   AND ap.timepaid IS NOT NULL
+                   AND ap.status != :due
+              ORDER BY apc.fullname";
+        return $DB->get_records_sql($sql, ['userid' => $userid, 'due' => self::DUE]);
+    }
+
+    /**
      * Retourne tous les utilisateurs concernés par une carte donnée.
      *
      * @param int $cardid
