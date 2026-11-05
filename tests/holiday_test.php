@@ -17,6 +17,7 @@
 namespace local_apsolu;
 
 use core_date;
+use customfield_weekday\field_controller as weekday_controller;
 use dml_write_exception;
 use local_apsolu\core\course;
 use local_apsolu\core\holiday;
@@ -172,9 +173,11 @@ final class holiday_test extends \advanced_testcase {
         $course = new course();
         $course->save($data);
 
+        $day = weekday_controller::$days[$course->customfields['weekday']->get_value()];
+
         // Ajoute un jour férié sur la prochaine session de cours.
         $data = new stdClass();
-        $data->day = strtotime('next ' . $course->customfields['weekday']->export_value() . ' this week') + WEEKSECS;
+        $data->day = strtotime('next ' . $day . ' this week') + WEEKSECS;
         $holiday = new holiday();
         $holiday->save($data);
 
