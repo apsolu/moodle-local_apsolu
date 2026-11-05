@@ -372,7 +372,7 @@ class local_apsolu_webservices extends external_api {
         $sql = "SELECT c.id AS idcourse, c.category AS idactivity, cd6.charvalue AS event, sk.name AS skill,
                        cd5.intvalue AS numweekday, cd4.shortcharvalue AS timerange
                   FROM {course} c
-                  JOIN {customfield_data} cd1 ON c.id = cd1.instanceid AND cd1.intvalue = 1 AND cd.fieldid = :customfieldtypeid
+                  JOIN {customfield_data} cd1 ON c.id = cd1.instanceid AND cd1.intvalue = 1 AND cd1.fieldid = :customfieldtypeid
                   JOIN {customfield_data} cd2 ON c.id = cd2.instanceid AND cd2.fieldid = :customfieldskillid
                   JOIN {apsolu_skills} sk ON sk.id = cd2.intvalue
                   JOIN {customfield_data} cd3 ON c.id = cd3.instanceid AND cd3.fieldid = :customfieldperiodid
